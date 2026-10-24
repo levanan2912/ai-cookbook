@@ -1,12 +1,17 @@
 import os
 
+from dotenv import load_dotenv
 from openai import OpenAI
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+load_dotenv()
 
+client = OpenAI(
+    api_key=os.getenv("GROQ_API_KEY"),
+    base_url="https://api.groq.com/openai/v1",  # Points to Groq
+)
 
 completion = client.chat.completions.create(
-    model="gpt-4o",
+    model="openai/gpt-oss-120b",
     messages=[
         {"role": "system", "content": "You're a helpful assistant."},
         {
