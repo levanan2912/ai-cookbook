@@ -1,10 +1,13 @@
 import os
 
+from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
+load_dotenv()
+client = OpenAI(
+    api_key=os.getenv("GROQ_API_KEY"), base_url="https://api.groq.com/openai/v1"
+)
 
 # --------------------------------------------------------------
 # Step 1: Define the response format in a Pydantic model
@@ -22,7 +25,7 @@ class CalendarEvent(BaseModel):
 # --------------------------------------------------------------
 
 completion = client.beta.chat.completions.parse(
-    model="gpt-4o",
+    model="openai/gpt-oss-120b",
     messages=[
         {"role": "system", "content": "Extract the event information."},
         {

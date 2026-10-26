@@ -2,10 +2,14 @@ import json
 import os
 
 import requests
+from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel, Field
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+load_dotenv()
+client = OpenAI(
+    api_key=os.getenv("GROQ_API_KEY"), base_url="https://api.groq.com/openai/v1"
+)
 
 """
 docs: https://platform.openai.com/docs/guides/function-calling
@@ -50,14 +54,15 @@ tools = [
 ]
 
 system_prompt = "You are a helpful weather assistant."
+user_prompt = "What's the weather like in Paris today?"
 
 messages = [
     {"role": "system", "content": system_prompt},
-    {"role": "user", "content": "What's the weather like in Paris today?"},
+    {"role": "user", "content": user_prompt},
 ]
 
 completion = client.chat.completions.create(
-    model="gpt-4o",
+    model="openai/gpt-oss-120b",
     messages=messages,
     tools=tools,
 )
@@ -103,9 +108,8 @@ class WeatherResponse(BaseModel):
 
 
 completion_2 = client.beta.chat.completions.parse(
-    model="gpt-4o",
+    model="openai/gpt-oss-120b",
     messages=messages,
-    tools=tools,
     response_format=WeatherResponse,
 )
 
