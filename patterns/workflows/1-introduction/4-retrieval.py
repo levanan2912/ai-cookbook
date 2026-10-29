@@ -4,7 +4,9 @@ import os
 from openai import OpenAI
 from pydantic import BaseModel, Field
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(
+    api_key=os.getenv("GROQ_API_KEY"), base_url="https://api.groq.com/openai/v1"
+)
 
 """
 docs: https://platform.openai.com/docs/guides/function-calling
@@ -55,7 +57,7 @@ messages = [
 ]
 
 completion = client.chat.completions.create(
-    model="gpt-4o",
+    model="openai/gpt-oss-120b",
     messages=messages,
     tools=tools,
 )
@@ -97,9 +99,8 @@ class KBResponse(BaseModel):
 
 
 completion_2 = client.beta.chat.completions.parse(
-    model="gpt-4o",
+    model="openai/gpt-oss-120b",
     messages=messages,
-    tools=tools,
     response_format=KBResponse,
 )
 
@@ -121,7 +122,7 @@ messages = [
 ]
 
 completion_3 = client.beta.chat.completions.parse(
-    model="gpt-4o",
+    model="openai/gpt-oss-120b",
     messages=messages,
     tools=tools,
 )

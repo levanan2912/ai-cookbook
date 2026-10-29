@@ -16,8 +16,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-model = "gpt-4o"
+client = AsyncOpenAI(
+    api_key=os.getenv("GROQ_API_KEY"), base_url="https://api.groq.com/openai/v1"
+)
+model = "openai/gpt-oss-120b"
 
 # --------------------------------------------------------------
 # Step 1: Define validation models
